@@ -1,4 +1,5 @@
 import os
+import sys
 import subprocess
 import time
 import shutil
@@ -39,10 +40,32 @@ def clear_print_queue(printers_folder, log_file):
                 except Exception as e:
                     log.write(f"{time.ctime()}: Não foi possível remover o arquivo {file_path}: {e}\n")
 
+def check_permissions():
+    """Verifica se o script está sendo executado com permissões de administrador."""
+    if not os.name == 'nt' or not os.system("fltmc") == 0:
+        print("Erro: Este script precisa ser executado com permissões de administrador.")
+        sys.exit(1)
+
+def parse_arguments():
+    """Analisa os argumentos de linha de comando."""
+    import argparse
+    parser = argparse.ArgumentParser(description="Limpa a fila de impressão e faz backup dos arquivos.")
+    parser.add_argument('--printers-folder', type=str, default=r'C:\Windows\System32\spool\PRINTERS',
+                        help="Pasta de spool de impressão")
+    parser.add_argument('--backup-folder', type=str, default=r'C:\Backup\Spooler',
+                        help="Pasta para backup dos arquivos de impressão")
+    parser.add_argument('--log-file', type=str, default=r'C:\Logs\spooler_cleanup.log',
+                        help="Arquivo de log")
+    return parser.parse_args()
+
 def main():
-    printers_folder = r'C:\Windows\System32\spool\PRINTERS'
-    backup_folder = r'C:\Backup\Spooler'
-    log_file = r'C:\Logs\spooler_cleanup.log'
+    args = parse_arguments()
+
+    printers_folder = args.printers_folder
+    backup_folder = args.backup_folder
+    log_file = args.log_file
+
+    check_permissions()
 
     print("Verificando serviço de spooler de impressão...")
 
@@ -65,6 +88,8 @@ def main():
     clear_print_queue(printers_folder, log_file)
 
     print("Fila de impressão desobstruída com sucesso.")
+    print(f"Backup salvo em: {backup_folder}")
+    print(f"Log de ações salvo em: {log_file}")
 
 if __name__ == "__main__":
     main()
