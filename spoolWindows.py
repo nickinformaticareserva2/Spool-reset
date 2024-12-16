@@ -5,13 +5,13 @@ import time
 import shutil
 
 def restart_spooler():
-    """Reinicia o serviço de spooler de impressão."""
+    """Reinicia o serviço de spooler de impressão"""
     subprocess.call(["net", "stop", "spooler"])
     time.sleep(2)
     subprocess.call(["net", "start", "spooler"])
 
 def is_spooler_running():
-    """Verifica se o serviço de spooler está em execução."""
+    """Verifica se o serviço de spooler está em execução"""
     result = subprocess.run(["sc", "query", "spooler"], capture_output=True, text=True)
     return "RUNNING" in result.stdout
 
@@ -47,7 +47,7 @@ def check_permissions():
         sys.exit(1)
 
 def parse_arguments():
-    """Analisa os argumentos de linha de comando."""
+    """Analisa os argumentos de linha de comando"""
     import argparse
     parser = argparse.ArgumentParser(description="Limpa a fila de impressão e faz backup dos arquivos.")
     parser.add_argument('--printers-folder', type=str, default=r'C:\Windows\System32\spool\PRINTERS',
@@ -74,7 +74,7 @@ def main():
 
     # Verificar se o spooler está rodando
     if is_spooler_running():
-        print("Serviço de spooler em execução.")
+        print("Serviço de spooler em execução")
     else:
         print("Erro: Serviço de spooler não está em execução.")
         return
