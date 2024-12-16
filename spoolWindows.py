@@ -4,7 +4,7 @@ import time
 import shutil
 
 def restart_spooler():
-    """Reinicia o serviço de spooler de impressão."""
+    """Reinicia o serviço de spooler de impressão"""
     subprocess.call(["net", "stop", "spooler"])
     time.sleep(2)
     subprocess.call(["net", "start", "spooler"])
@@ -15,7 +15,7 @@ def is_spooler_running():
     return "RUNNING" in result.stdout
 
 def backup_print_queue(printers_folder, backup_folder):
-    """Faz backup dos arquivos de impressão antes de deletá-los."""
+    """Faz backup dos arquivos de impressão antes de deletá-los"""
     if not os.path.exists(backup_folder):
         os.makedirs(backup_folder)
     for root, dirs, files in os.walk(printers_folder):
@@ -28,7 +28,7 @@ def backup_print_queue(printers_folder, backup_folder):
                 print(f"Não foi possível copiar o arquivo {file_path} para backup: {e}")
 
 def clear_print_queue(printers_folder, log_file):
-    """Remove todos os arquivos na pasta de spool de impressão e registra as ações."""
+    """Remove todos os arquivos na pasta de spool de impressão e registra as ações"""
     with open(log_file, 'a') as log:
         for root, dirs, files in os.walk(printers_folder):
             for file in files:
@@ -51,9 +51,9 @@ def main():
 
     # Verificar se o spooler está rodando
     if is_spooler_running():
-        print("Serviço de spooler em execução.")
+        print("Serviço de spooler em execução")
     else:
-        print("Erro: Serviço de spooler não está em execução.")
+        print("Erro: Serviço de spooler não está em execução")
         return
 
     # Fazer backup dos arquivos de impressão
