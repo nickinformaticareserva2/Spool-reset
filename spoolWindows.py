@@ -4,7 +4,7 @@ import time
 import shutil
 
 def restart_spooler():
-    """Reinicia o serviço de spooler de impressão."""
+    """Reinicia o serviço de spooler de impressão"""
     subprocess.call(["net", "stop", "spooler"])
     time.sleep(2)
     subprocess.call(["net", "start", "spooler"])
